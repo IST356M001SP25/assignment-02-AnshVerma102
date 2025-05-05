@@ -27,15 +27,36 @@ Example:
 '''
 
 import json
+from pathlib import Path
 from packaging import parse_packaging, calc_total_units, get_unit
-packages = []
-with open('data/packaging.txt') as f:
-    for line in f.readlines():
-        line = line.strip()
-        package = parse_packaging(line)
-        total_units = calc_total_units(package)
-        unit = get_unit(package)
-        print(f"{line} => total units: {total_units} {unit}")
-        packages.append(package)
-        with open('data/packaging.json', 'w') as f:
-            json.dump(packages, f, indent=4)
+
+
+def main():
+    data_path = Path('data/packaging.txt')
+    if not data_path.exists():
+        print(f"File not found: {data_path}")
+        return
+
+    packages = []
+    # Read and strip lines, skip empty ones
+    lines = [line.strip() for line in data_path.read_text().splitlines() if line.strip()]
+
+    for line in lines:
+        try:
+            package = parse_packaging(line)
+            total_units = calc_total_units(package)
+            unit = get_unit(package)
+            print(f"{line} => total units: {total_units} {unit}")
+            packages.append(package)
+        except Exception as e:
+            print(f"Skipping invalid line: '{line}' ({e})")
+
+    # Write output JSON once
+    out_path = Path('data/packaging.json')
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(packages, indent=4))
+    print(f"Saved {len(packages)} package(s) to {out_path}")
+
+
+if __name__ == '__main__':
+    main()
