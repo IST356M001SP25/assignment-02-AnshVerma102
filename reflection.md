@@ -1,7 +1,7 @@
 # Reflection
 
-Student Name:  name
-Sudent Email:  email
+Student Name:  Ansh Verma
+Sudent Email:  averma11@syr.edu
 
 ## Instructions
 
@@ -23,3 +23,4 @@ Examples:
 
 `--- Reflection Below This Line ---`
 
+This was my first exposure to the packaging.py module, and that it can be used to parse lines to a text file and I also learned how to use the json module, which allowed me to open and write to files. I struggled a bit with the tokenization and the associated syntax.
